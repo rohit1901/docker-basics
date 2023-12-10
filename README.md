@@ -95,7 +95,7 @@ Stops and removes containers, networks, volumes, and images created by `docker-c
 - [Docker Hub](https://hub.docker.com/)
 - [Docker Compose Documentation](https://docs.docker.com/compose/)
 
-#Practice Exercises 
+# Practice Exercises 
 Here's a set of basic Docker practice tasks:
 
 ### 1. Pulling and Running an Image
