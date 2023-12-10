@@ -1,4 +1,4 @@
-# Basic Docker Operations
+# Basic Docker Operations [![My Skills](https://skillicons.dev/icons?i=docker)](https://skillicons.dev)
 
 This README provides a guide to perform basic Docker operations using commonly used commands.
 
