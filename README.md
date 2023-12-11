@@ -150,3 +150,54 @@ Here's a set of basic Docker practice tasks:
 - **Steps**:
     1. Use `docker system prune` to remove all stopped containers, dangling images, and unused networks.
     2. Manually delete specific unused containers, images, or volumes using `docker rm`, `docker rmi`, or `docker volume rm`.
+
+# Multi-stage Builds
+Multi-stage builds in Docker allow you to create more efficient Dockerfiles by using multiple build stages to compile code, gather dependencies, and generate artifacts without including unnecessary tools or dependencies in the final image. This feature helps to reduce the size of the final image and ensures only necessary components are included.
+
+
+### Basic Structure of a Multi-stage Build:
+
+1. **Multiple Stages**: Dockerfiles for multi-stage builds consist of multiple `FROM` statements, each defining a new build stage.
+   
+2. **Intermediate Stages**: Intermediate stages are used for building and compiling the code, installing dependencies, and performing other necessary tasks.
+
+3. **Final Stage**: The final stage typically uses a minimal base image and copies the necessary artifacts or binaries from the intermediate stages. This final stage contains the built application or service.
+
+### How Multi-stage Builds Work:
+
+1. **Multiple `FROM` Statements**: Each `FROM` statement begins a new build stage. For instance:
+
+    ```Dockerfile
+    FROM base as builder
+    # Build stage for compiling code and dependencies
+
+    FROM another_base as dependencies
+    # Stage for fetching dependencies, if needed
+
+    FROM final_base
+    # Final stage with the minimal image to run the application
+    ```
+
+2. **Copying Artifacts**: Intermediate stages compile code and produce necessary artifacts. You can copy these artifacts from one stage to another using the `COPY` command:
+
+    ```Dockerfile
+    FROM base as builder
+    # Install dependencies and compile code
+    RUN some_build_commands
+
+    FROM final_base
+    # Copy artifacts from the builder stage to the final stage
+    COPY --from=builder /path/to/artifact /app
+    ```
+
+3. **Resulting in a Slimmer Final Image**: The final stage of the multi-stage build incorporates only the necessary files or binaries from the previous stages. This reduces the overall size of the final image since it does not include unnecessary build tools or dependencies used only during the compilation phase.
+
+### Benefits of Multi-stage Builds:
+
+1. **Smaller Image Sizes**: By discarding build tools and dependencies after their use in earlier stages, the final image contains only the essential components needed to run the application.
+
+2. **Better Security**: Fewer unnecessary dependencies mean fewer potential vulnerabilities, which enhances the security of the final image.
+
+3. **Improved Build Performance**: Separating build stages can accelerate the build process by leveraging cached layers and optimizing the build pipeline.
+
+Multi-stage builds are beneficial for complex applications where the build process involves multiple steps and dependencies, resulting in more efficient and optimized Docker images for production use.
